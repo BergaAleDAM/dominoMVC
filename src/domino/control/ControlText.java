@@ -29,7 +29,7 @@ public class ControlText {
 
         realitzarPrimeraJugada();
 
-        while (joc.isFinalitzat() == false) {
+        while (!joc.isFinalitzat()) {
             realitzarJugada();
         }
 
@@ -45,7 +45,6 @@ public class ControlText {
         vt.mostrarTablero(joc.getFitxesJugades());
         joc.actualitzarEstat();
         
-        System.out.println("\n");
     }
     
     public String[] introduirNoms(int numJugadors) {

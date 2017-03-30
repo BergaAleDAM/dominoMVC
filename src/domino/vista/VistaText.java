@@ -99,16 +99,16 @@ public class VistaText {
     public int pedirOpcion() {
 
         int opcio;
-
         while (true) {
-            System.out.println("\n");
+            //System.out.println("\n");
             if (!lector.hasNextInt()) {
                 System.out.println("No se puede");
                 lector.next();
 
             } else {
-                
-                opcio = Integer.parseInt(lector.nextLine());
+                //String op =lector.nextLine();
+                opcio = Integer.parseInt(lector.next());
+                System.out.println(opcio);
                 if (  opcio < 4 && opcio > 0) {
                     break;
                 } else {
@@ -126,7 +126,6 @@ public class VistaText {
         int opcion;
 
         while (true) {
-            System.out.println("\n");
             if (lector.hasNextInt()) {
                 opcion = Integer.parseInt(lector.nextLine());
                 if (opcion == 0) {
@@ -156,7 +155,7 @@ public class VistaText {
     }
         
             public boolean pedirExtremo() {
-        System.out.println("");
+        
         
         Character e = lector.next().charAt(0);
 
