@@ -127,7 +127,7 @@ public class VistaText {
 
         while (true) {
             if (lector.hasNextInt()) {
-                opcion = Integer.parseInt(lector.nextLine());
+                opcion = Integer.parseInt(lector.next());
                 if (opcion == 0) {
                     return null;
                 } else if (opcion > 0 && opcion <= mano.size()) {

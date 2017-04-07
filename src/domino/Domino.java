@@ -1,15 +1,14 @@
 package domino;
 
-import domino.control.ControlText;
-
+//import domino.vista.VistaSwing;
 
 public class Domino {
 
     public static void main(String[] args) {
-        ControlText gj = new ControlText();
-        gj.iniciarPartida();
+
+               // new VistaSwing();
         
-                
+
     }
 
 }
