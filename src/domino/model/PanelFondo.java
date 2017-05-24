@@ -25,6 +25,7 @@ public class PanelFondo extends JPanel{
         this.altura = altura;
         try {
             img = ImageIO.read(new File(ruta));
+            
             this.repaint();
         } catch (IOException e) {
             System.err.println(e.getMessage());

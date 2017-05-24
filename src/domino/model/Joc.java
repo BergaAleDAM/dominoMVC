@@ -6,7 +6,8 @@ import java.util.Random;
 
 public class Joc {
 
-    public final int NUMJUGADORS, NUMFITXES, NUMFITXESJUGADOR;
+    public final int NUMFITXES, NUMFITXESJUGADOR;
+    public int NUMJUGADORS = 4;
     private ArrayDeque<Fitxa> fitxesJugades;
     private ArrayList<Fitxa> fitxesInicials;
     private Jugador[] jugadors;
@@ -63,7 +64,7 @@ public class Joc {
         fitxesJugades = new ArrayDeque();
         comptPassar = 0;
         finalitzat = false;        
-        crearJugadors(noms);
+        crearJugadors(noms,4);
         crearFitxes();
         repartirFitxes();       
         iniciarTorn();
@@ -90,9 +91,9 @@ public class Joc {
         } 
     }
 
-    private void crearJugadors(String[] noms) {
-        jugadors = new Jugador[NUMJUGADORS];
-        for (int i = 0; i < NUMJUGADORS; i++) {
+    private void crearJugadors(String[] noms, int quantitat) {
+        jugadors = new Jugador[quantitat];
+        for (int i = 0; i < quantitat; i++) {
             jugadors[i] = new Jugador(noms[i]);
         }
     }

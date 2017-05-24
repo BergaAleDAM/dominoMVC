@@ -1,22 +1,14 @@
 package domino.vista;
 
-import domino.control.ControlText;import domino.model.PanelFondo;
+import domino.control.ControlText;
+import domino.model.PanelConfig;
+import domino.model.PanelFondo;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
-
 import java.awt.HeadlessException;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -35,6 +27,8 @@ public class VistaSwing extends JFrame implements ActionListener {
     private JPanel panelJuego;
     private PanelFondo panelColor;
 
+    private PanelConfig panelConfig;
+    
     private BufferedImage img = null;
     
     public VistaSwing() throws HeadlessException {
@@ -45,10 +39,14 @@ public class VistaSwing extends JFrame implements ActionListener {
     }
 
     private void configuracio() {
+
+        //Panel inicial que tendra estas dimensiones          
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setPreferredSize(new Dimension(700, 400));
+        this.setPreferredSize(new Dimension(700, 450));
         this.setLocationRelativeTo(null);
     
+        //Los JMenuItem seran los menu que pareceran arriba a la izquierda
+        //Van dentro de JMenu
         menuItemJugar  = new JMenuItem("Jugar");
         menuItemJugar.addActionListener(this);
         
@@ -62,6 +60,9 @@ public class VistaSwing extends JFrame implements ActionListener {
         menuItemColorRustic.addActionListener(this);
         
     
+        //Los JMenu seran los menu de arriba que engloban los Item y estan dentro
+        //de los JMenuBar
+        
         menuImatge = new JMenu("Inicia Joc");
         menuImatge.add(menuItemJugar);
         
@@ -79,9 +80,11 @@ public class VistaSwing extends JFrame implements ActionListener {
         
         
         
-        this.labelJuego = new JLabel();
         this.labelColor = new JLabel("Color", JLabel.CENTER);
         this.labelColor.setOpaque(true);
+        
+        
+        
         
         panelColor = new PanelFondo();
         
@@ -90,9 +93,8 @@ public class VistaSwing extends JFrame implements ActionListener {
         
         panelJuego.setOpaque(false);
         
-        //panelColor.add(labelColor);
-        panelJuego.add(labelJuego);
-
+        panelColor.add(labelColor);
+        
         this.getContentPane().add(this.panelColor, BorderLayout.CENTER);
         this.getContentPane().add(this.panelJuego, BorderLayout.SOUTH);
         
@@ -135,7 +137,7 @@ public class VistaSwing extends JFrame implements ActionListener {
     
     public void canviarFons(String ruta){
         
-        panelColor.carregarImatge(ruta, 700, 400);
+        panelColor.carregarImatge(ruta, 700, 450);
        
          
     }
