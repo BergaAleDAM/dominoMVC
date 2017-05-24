@@ -2,6 +2,7 @@ package domino.model;
 
 public class Torn {
     private Joc joc;
+    
 
 
     public Torn(Joc joc) {
@@ -42,6 +43,14 @@ public class Torn {
     public void inicial() {
         joc.getFitxesJugades().add(joc.getFitxaInicial());
         joc.getJugadors()[joc.getTorn()].colocarFitxa(joc.getFitxaInicial());
+     
+    }
+    
+    public void inicialVista(){
+      joc.getFitxesJugades().add(joc.getFitxaInicial());
+      joc.getJugadors()[joc.getTorn()].colocarFitxa(joc.getFitxaInicial());
+        
+        System.out.println("ha hecho esto");
     }
 
     private boolean isDoble(Fitxa f) {

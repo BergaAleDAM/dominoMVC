@@ -9,6 +9,10 @@ import domino.model.Fitxa;
 import domino.model.Joc;
 import domino.model.Torn;
 import domino.vista.VistaText;
+import domino.vista.VistaSwing;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,6 +22,13 @@ public class ControlText {
 
     Joc joc = new Joc(4, 28, 7);
     VistaText vt = new VistaText(joc);
+    VistaSwing vs;
+
+    public ControlText(VistaSwing vs) {
+        this.vs = vs;
+        this.vs.setJoc(joc);
+    }
+
     
     private int fichita = 1;
 
@@ -25,33 +36,49 @@ public class ControlText {
 
     public void iniciarPartida() {
         //Inicia el joc
+        
         joc.iniciar(introduirNoms(joc.NUMJUGADORS));
 
+//        
         realitzarPrimeraJugada();
-
-        while (!joc.isFinalitzat()) {
-            realitzarJugada();
-        }
-
-        vt.ganador();
+//
+//        while (!joc.isFinalitzat()) {
+//            realitzarJugada();
+//        }
+//
+//        vt.ganador();
     }
 
         public void realitzarPrimeraJugada() {
         
-        Torn t = new Torn(joc);
-        
-        vt.mostrarJugador(joc.getTorn());
-        t.inicial();
-        vt.mostrarTablero(joc.getFitxesJugades());
-        joc.actualitzarEstat();
-        
+        try {
+            Torn t = new Torn(joc);
+            
+            vt.mostrarJugador(joc.getTorn());
+            
+            vs.mostrarJugador(joc.getTorn());
+            vs.setUiTorn(joc.getTorn());
+            
+            
+            //t.inicial();
+            t.inicialVista();
+            vt.mostrarTablero(joc.getFitxesJugades());
+            vs.mostrarTablero(joc.getFitxesJugades());
+            /*
+            joc.actualitzarEstat();
+            */
+        } catch (IOException ex) {
+            System.out.println("Algo falla : " + ex);
+        }
     }
     
     public String[] introduirNoms(int numJugadors) {
         String[] noms = new String[numJugadors];
         for (int i = 0; i < numJugadors; i++) {
-            noms[i] = vt.pedirNombre(i);
+            noms[i] = vs.pedirNombre(i);
+            //noms[i] = vt.pedirNombre(i);
         }
+        
         return noms;
     }
 
