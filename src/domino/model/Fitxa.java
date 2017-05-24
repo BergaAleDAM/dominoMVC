@@ -11,6 +11,28 @@ public class Fitxa {
     public int[] getValors() {
         return valors;
     }
+    
+    public int getPrimerValor(){
+        int valor;
+        
+        if(valors[0] < valors[1]){
+            valor = valors[0];
+        }else{
+            valor = valors[1];
+        }
+        return valor;
+    }
+    
+    public int getSegonValor(){
+         int valor;
+        
+        if(valors[0] > valors[1]){
+            valor = valors[0];
+        }else{
+            valor = valors[1];
+        }
+        return valor;
+    }
 
     /**
      * Es permuten els valors de la fitxa.
