@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -38,32 +39,29 @@ import javax.swing.JPanel;
 import javax.swing.plaf.IconUIResource;
 
 public class VistaSwing extends JFrame implements ActionListener {
-    
+
     Joc joc;
-    
+
     int uiTorn = 1;
 
     private JMenuBar menuBar;
     private JMenu menuImatge, menuColor;
     private JMenuItem menuItemJugar, menuItemColorDefecte, menuItemColorBlau, menuItemColorRustic;
 
-    private JLabel   labelNorte, labelEste, labelOeste,labeltab,usuario;
-    private JPanel  jugNorte, jugSur, jugEste, jugOeste,tablero;
+    private JPanel jugNorte, jugSur, jugEste, jugOeste, tablero;
     private PanelFondo panelColor;
 
     private PanelConfig panelConfig;
-    
+
     private BufferedImage img = null;
     //private ArrayDeque<Fitxa> tableroFichas;
-    
-    
-    
+
     public VistaSwing() throws HeadlessException {
 
         configuracio();
         this.pack();
         this.setVisible(true);
-        
+
     }
 
     private void configuracio() {
@@ -72,9 +70,8 @@ public class VistaSwing extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(0, 0);
         this.setPreferredSize(new Dimension(1460, 1000));
-        
-        //this.setLocationRelativeTo(null);
 
+        //this.setLocationRelativeTo(null);
         menuItemJugar = new JMenuItem("Jugar");
         menuItemJugar.addActionListener(this);
 
@@ -105,10 +102,9 @@ public class VistaSwing extends JFrame implements ActionListener {
 //        //this.labelSur = new JLabel("jugSur");
 //        this.labelEste = new JLabel("jugEste");
 //        this.labelOeste = new JLabel("jugOeste");
-        this.labeltab = new JLabel("tablerito");
+        //this.labeltab = new JLabel("tablerito");
         //this.labelColor = new JLabel("Color", JLabel.CENTER);
         //this.labelColor.setOpaque(true);
-
         panelColor = new PanelFondo();
         jugNorte = new JPanel();
         jugSur = new JPanel();
@@ -118,29 +114,25 @@ public class VistaSwing extends JFrame implements ActionListener {
         jugOeste.setLayout(new BoxLayout(jugOeste, BoxLayout.Y_AXIS));
         tablero = new JPanel();
 
-        
         this.getContentPane().add(this.panelColor, BorderLayout.CENTER);
         //this.getContentPane().add(this.panelJuego, BorderLayout.SOUTH);
-        
+
         this.getContentPane().add(this.jugSur, BorderLayout.SOUTH);
-        jugSur.setPreferredSize(new Dimension(150,80));
+        jugSur.setPreferredSize(new Dimension(150, 80));
         //jugSur.add(labelSur);
-        
-        
-        
+
         this.getContentPane().add(this.jugNorte, BorderLayout.NORTH);
-        
-        
+
         this.getContentPane().add(this.jugEste, BorderLayout.EAST);
-        
+
         this.getContentPane().add(this.jugOeste, BorderLayout.WEST);
-        
+        jugOeste.setPreferredSize(new Dimension(80, 80));
+
         panelColor.add(this.tablero, BorderLayout.CENTER);
-        tablero.add(labeltab);
-        
+        //tablero.add(labeltab);
+
         canviarFons("fichasDomino/tapete.png");
-        
-        
+
     }
 
     //JFIleChoose para escojer el tipico archivo que te pone
@@ -191,35 +183,43 @@ public class VistaSwing extends JFrame implements ActionListener {
             }
         });
     }
-    
-    public String pedirNombre(int i){
+
+    public String pedirNombre(int i) {
         return JOptionPane.showInputDialog(null, "Pon el nombre del jugador", "Nombre Jugador", 1);
 
     }
 
     public void mostrarJugador(int torn) throws IOException {
-        
-        this.jugSur.add(new JLabel("Torn " + (uiTorn) + "\tJugador: " + joc.getJugadors()[torn].getNom()),LEFT_ALIGNMENT);
-        
+
+        this.jugSur.add(new JLabel("Torn " + (uiTorn) + "\tJugador: " + joc.getJugadors()[torn].getNom()), LEFT_ALIGNMENT);
+
         for (int i = 0; i < joc.getJugadors()[torn].getFitxes().size(); i++) {
-            
-            
-            Image img = ImageIO.read(convertirFicha(i,torn));
-            
-            this.jugSur.add(new JButton(new ImageIcon(img)));
+
+            Image img = ImageIO.read(convertirFicha(i, torn));
+            JButton boton = new JButton(new ImageIcon(img));
+            boton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.out.println("Do Something Clicked");
+                }
+            });
+            this.jugSur.add(boton);
         }
-        
+
         this.setVisible(true);
+
         uiTorn++;
-    
-        
+        uiTorn %= 4;
+
+        System.out.println("jandepore" + uiTorn);
+
         ArrayList<Integer> turno = new ArrayList<>();
-        
+
         turno.add(torn);
-        turno.add(mostrarAltresJugadors(turno,jugOeste));
-        turno.add(mostrarAltresJugadors(turno,jugNorte));
-        turno.add(mostrarAltresJugadors(turno,jugEste));
-        
+        turno.add(mostrarAltresJugadors(turno, jugOeste));
+        turno.add(mostrarAltresJugadors(turno, jugNorte));
+        turno.add(mostrarAltresJugadors(turno, jugEste));
+
     }
 
     public Joc getJoc() {
@@ -230,74 +230,119 @@ public class VistaSwing extends JFrame implements ActionListener {
         this.joc = joc;
     }
 
-    private File convertirFicha(int i,int torn) {
-    
+    private File convertirFicha(int i, int torn) {
+
         StringBuilder sb = new StringBuilder();
         String ruta;
-        
+
         sb.append("fichasDomino/");
         sb.append(joc.getJugadors()[torn].getFitxes().get(i).getPrimerValor());
         sb.append(joc.getJugadors()[torn].getFitxes().get(i).getSegonValor());
         sb.append(".png");
         ruta = sb.toString();
 
-        
         return new File(ruta);
     }
 
     private int mostrarAltresJugadors(ArrayList<Integer> turno, JPanel panel) throws IOException {
-    
-       int devuelve = 0;
-        
+
+        int devuelve = 0;
+
         for (int i = 0; i < joc.getJugadors().length; i++) {
-            
-            if(!turno.contains(i)){
-            
-            panel.add(new JLabel("Jugador: " + joc.getJugadors()[i].getNom()));
-            
+
+            if (!turno.contains(i)) {
+
+                panel.add(new JLabel("Jugador: " + joc.getJugadors()[i].getNom()));
+
                 for (Fitxa fitxa : joc.getJugadors()[i].getFitxes()) {
                     Image img = ImageIO.read(new File("fichasDomino/cruz.png"));
+
                     panel.add(new JButton(new ImageIcon(img)));
                 }
-            
-            
-            
-            devuelve = i;
-            
-            break;
+
+                devuelve = i;
+
+                break;
             }
         }
-        
+
         this.setVisible(true);
         System.out.println(devuelve);
         return devuelve;
     }
 
     public void mostrarTablero(ArrayDeque<Fitxa> fitxesJugades) {
-    
+
+        Fitxa[] tablerito = new Fitxa[fitxesJugades.size()];
+        int count = 0;
+        for (Iterator<Fitxa> i = fitxesJugades.iterator(); i.hasNext();) {
+            tablerito[count++] = i.next();
+        }
+
         for (int i = 0; i < fitxesJugades.size(); i++) {
-            
-            
+
             try {
-                Image img = ImageIO.read(convertirFicha(i,uiTorn));
-                
-                tablero.add(new JButton(new ImageIcon(img)));
+                Image img = ImageIO.read(convertirFichaTablero(tablerito[i]));
+
+                JButton boton = new JButton(new ImageIcon(img));
+                tablero.add(boton);
+
             } catch (IOException ex) {
                 Logger.getLogger(VistaSwing.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    
-        System.out.println(fitxesJugades.size());
-        tablero.setVisible(true);
-        tablero.repaint();
-        tablero.updateUI();
+
+        actualizarPaneles();
+
     }
 
     public void setUiTorn(int uiTorn) {
         this.uiTorn = uiTorn;
     }
 
-    
-    
+    private File convertirFichaTablero(Fitxa tableroFitcha) {
+
+        StringBuilder sb = new StringBuilder();
+        String ruta;
+
+        sb.append("fichasDomino/");
+        sb.append(tableroFitcha.getPrimerValor());
+        sb.append(tableroFitcha.getSegonValor());
+        sb.append(".png");
+        ruta = sb.toString();
+
+        return new File(ruta);
+    }
+
+    private void actualizarPaneles() {
+
+        try {
+            System.out.println("UITORN" + uiTorn);
+            actualizarManos();
+            mostrarJugador(uiTorn);
+        } catch (IOException ex) {
+            Logger.getLogger(VistaSwing.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        tablero.setVisible(true);
+        tablero.repaint();
+        tablero.updateUI();
+        jugNorte.repaint();
+        jugNorte.updateUI();
+        jugSur.repaint();
+        jugSur.updateUI();
+        jugEste.repaint();
+        jugEste.updateUI();
+        jugOeste.repaint();
+        jugOeste.updateUI();
+    }
+
+    private void actualizarManos() {
+
+        jugNorte.removeAll();
+        jugSur.removeAll();
+        jugOeste.removeAll();
+        jugEste.removeAll();
+    }
 
 }

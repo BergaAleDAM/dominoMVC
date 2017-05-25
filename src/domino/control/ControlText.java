@@ -41,10 +41,11 @@ public class ControlText {
 
 //        
         realitzarPrimeraJugada();
-//
-//        while (!joc.isFinalitzat()) {
-//            realitzarJugada();
-//        }
+
+        //while (!joc.isFinalitzat()) {
+            //realitzarJugada();
+            realitzarJugadaUI();
+        //}
 //
 //        vt.ganador();
     }
@@ -53,20 +54,27 @@ public class ControlText {
         
         try {
             Torn t = new Torn(joc);
+            vs.setUiTorn(joc.getTorn());
             
             vt.mostrarJugador(joc.getTorn());
             
             vs.mostrarJugador(joc.getTorn());
-            vs.setUiTorn(joc.getTorn());
+            
+            System.out.println("Turno" + joc.getTorn());
+            
+            
             
             
             //t.inicial();
             t.inicialVista();
             vt.mostrarTablero(joc.getFitxesJugades());
             vs.mostrarTablero(joc.getFitxesJugades());
-            /*
+            
             joc.actualitzarEstat();
-            */
+            
+           
+            
+            
         } catch (IOException ex) {
             System.out.println("Algo falla : " + ex);
         }
@@ -74,10 +82,13 @@ public class ControlText {
     
     public String[] introduirNoms(int numJugadors) {
         String[] noms = new String[numJugadors];
-        for (int i = 0; i < numJugadors; i++) {
-            noms[i] = vs.pedirNombre(i);
+        
+            noms[0] = vs.pedirNombre(0);
+            noms[1] = "IA 1";
+            noms[2] = "IA 2";
+            noms[3] = "IA 3";
             //noms[i] = vt.pedirNombre(i);
-        }
+        
         
         return noms;
     }
@@ -91,6 +102,13 @@ public class ControlText {
         menu1();
 
     }
+    
+    public void realitzarJugadaUI() {
+        System.out.println("holita");
+    }
+    
+    
+    
 
     public void menu1() {
         int opcio = vt.mostrarMenu1();
